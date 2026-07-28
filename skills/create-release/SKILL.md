@@ -4,9 +4,6 @@ description: Create GitHub releases following the established version scheme, ti
 disable-model-invocation: true
 ---
 
-<!-- Local skill; originated in first-escape-der-turm `.cursor/skills/create-release`.
-     Generalized: removed project-specific description wording; conventions kept as personal defaults. -->
-
 # Creating Releases
 
 Releases are GitHub releases with lightweight tags, created via `gh release create`. Notes follow a consistent English style.
@@ -25,7 +22,7 @@ Releases are GitHub releases with lightweight tags, created via `gh release crea
 vX.X.X — <Short Title Case summary>
 ```
 
-Use an em dash (`—`). Example: `v0.0.19 — Updated hints`.
+Use an em dash (`—`). Example: `v1.2.0 — Add Export Endpoint`.
 
 ## Notes format
 
@@ -66,11 +63,11 @@ gh release create vX.X.X --target <FULL_SHA> --title "vX.X.X — <Title>" --note
 ## Example
 
 ```bash
-gh release create v0.0.13 --target 243b5c3916aa1b1526e5dcf5d7275b03f9299ee4 \
-  --title "v0.0.13 — Block calls during Event 19" \
-  --notes "Puzzle 19 is an event (phones must be dead during the reveal), so inbound player calls are rejected while it is active.
+gh release create v1.2.0 --target 0123456789abcdef0123456789abcdef01234567 \
+  --title "v1.2.0 — Add Export Endpoint" \
+  --notes "Adds a JSON export endpoint so clients can download their data without scraping the UI.
 
-## Major changes since v0.0.12
-- **Event 19 call block**: New \`isEvent19CallBlocked\` in \`call-lockout.ts\`; the server replies \`call_blocked\` with reason \`event_19\` and no AI session starts.
-- **Docs & tests**: README documents the block; added \`call-lockout\` unit tests."
+## Major changes since v1.1.0
+- **API**: New \`GET /api/export\` returns a downloadable JSON payload; gated by the existing session auth.
+- **Docs & tests**: README documents the route; added request/response unit tests."
 ```
