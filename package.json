@@ -1,0 +1,18 @@
+{
+  "name": "dholde-skills",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Denis's agent skills — sync into any repo's .claude/skills/",
+  "type": "module",
+  "bin": {
+    "dholde-skills": "./bin/install.mjs"
+  },
+  "files": [
+    "bin",
+    "skills"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT"
+}
