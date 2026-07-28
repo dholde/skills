@@ -4,13 +4,22 @@
  * Usage (from any git repo): `npx github:dholde/skills sync`
  */
 
-import { cpSync, existsSync, mkdirSync, readdirSync, statSync } from "node:fs";
+import {
+  cpSync,
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  readdirSync,
+  realpathSync,
+  statSync,
+} from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { execSync } from "node:child_process";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const SKILLS_ROOT = join(__dirname, "..", "skills");
+const PACKAGE_ROOT = join(__dirname, "..");
+const SKILLS_ROOT = join(PACKAGE_ROOT, "skills");
 const TARGET = join(process.cwd(), ".claude", "skills");
 
 function assertGitRepo() {
@@ -19,6 +28,33 @@ function assertGitRepo() {
   } catch {
     console.error("Refusing to sync: not inside a git repository.");
     process.exit(1);
+  }
+}
+
+/** Refuse syncing into this skills source repo (avoids nesting .claude/skills here). */
+function assertNotSourceRepo() {
+  try {
+    if (realpathSync(process.cwd()) === realpathSync(PACKAGE_ROOT)) {
+      console.error(
+        "Refusing to sync into the skills source repo itself. Run sync from a consuming project.",
+      );
+      process.exit(1);
+    }
+  } catch {
+    // realpath can fail for odd cwd; fall through
+  }
+  const pkgPath = join(process.cwd(), "package.json");
+  if (!existsSync(pkgPath)) return;
+  try {
+    const pkg = JSON.parse(readFileSync(pkgPath, "utf8"));
+    if (pkg.name === "dholde-skills") {
+      console.error(
+        "Refusing to sync into the skills source repo itself. Run sync from a consuming project.",
+      );
+      process.exit(1);
+    }
+  } catch {
+    // ignore unreadable package.json
   }
 }
 
@@ -35,6 +71,7 @@ function listSkills() {
 
 function sync() {
   assertGitRepo();
+  assertNotSourceRepo();
   mkdirSync(TARGET, { recursive: true });
   const names = listSkills();
   if (names.length === 0) {
