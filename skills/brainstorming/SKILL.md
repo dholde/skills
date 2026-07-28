@@ -5,7 +5,7 @@ description: "Use before any creative work - creating features, building compone
 
 <!-- Adapted from obra/superpowers (https://github.com/obra/superpowers/blob/main/skills/brainstorming/SKILL.md).
      Local changes: spec path is docs/specs/, removed the Visual Companion (requires Superpowers server tooling),
-     and the terminal step hands off to the user instead of invoking the writing-plans skill (not installed). -->
+     and the terminal step hands off to the user instead of auto-invoking writing-plans. -->
 
 # Brainstorming Ideas Into Designs
 

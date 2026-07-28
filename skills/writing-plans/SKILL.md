@@ -5,8 +5,8 @@ description: Use when you have a spec or requirements for a multi-step task, bef
 
 <!-- Adapted from obra/superpowers (https://github.com/obra/superpowers/blob/main/skills/writing-plans/SKILL.md).
      Local changes: plan path is docs/plans/ (upstream: docs/superpowers/plans/), removed the git-worktrees context note,
-     removed the "REQUIRED SUB-SKILL" header line and rewrote the Execution Handoff (subagent-driven-development /
-     executing-plans are not installed here — execution is handed back to the user), dropped the companion
+     removed the "REQUIRED SUB-SKILL" header line and rewrote the Execution Handoff to offer the user a choice
+     (executing-plans / executing-plans-step-wise / hand off), dropped the companion
      plan-document-reviewer-prompt.md (subagent review tooling not used). -->
 
 # Writing Plans

@@ -12,11 +12,10 @@ description: Execute a written implementation plan from docs/plans/ one task at 
      - Branch/PR naming: do NOT use <plan>-task-<n>. Branches and PR titles name the *deliverable*
        (`<type>/<nn>-<short-description>`), so git history and the PR list stay readable later.
        Plan/task traceability lives in the PR body ("Plan task" section), not in the branch name.
-       Adopted 2026-07-22 after feedback that foundation-task-N names hide what the change is.
-     - Merging (adopted 2026-07-22): PRs are ALWAYS squash-merged. Squash commit = PR title (subject)
+     - Merging: PRs are ALWAYS squash-merged. Squash commit = PR title (subject)
        + PR description (detailed body), like `git commit -m "short" -m "details"`. Repo settings
        should enforce this (squash only; default message = PR title + body).
-     - Learning check (adopted 2026-07-23): at task pick, if the task has learning-relevant work,
+     - Learning check: at task pick, if the task has learning-relevant work,
        offer keep-me-relevant (solo / guided / split / agent) before implementing. -->
 
 # Executing Plans — Step-Wise (PR per task)
@@ -56,7 +55,7 @@ Execute exactly **one plan task per cycle**: branch, implement, verify, open a P
 
    Examples: `chore/01-scaffold-nextjs-vitest`, `feat/05a-i18n-routing`, `feat/07-chat-api`.
 
-   **Do not** name branches `<plan>-task-<n>` (e.g. `foundation-task-5`) — the plan name does not describe the change, and the task number alone is opaque in the PR list. Plan/task linkage belongs in the PR description.
+   **Do not** name branches `<plan>-task-<n>` (e.g. `export-plan-task-5`) — the plan name does not describe the change, and the task number alone is opaque in the PR list. Plan/task linkage belongs in the PR description.
 
 2. Mark the task in_progress; follow each plan step exactly; run every verification; commit as the plan specifies
 3. Only this task's files — no scope creep, no drive-by fixes. Note unrelated findings in the PR description instead.

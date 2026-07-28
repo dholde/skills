@@ -47,7 +47,7 @@ Transcripts live at:
 `~/.cursor/projects/<slug>/agent-transcripts/<uuid>/<uuid>.jsonl`
 
 Where `<slug>` = absolute `cwd` with leading `/` stripped and `/` replaced by `-`.
-Example: `/Users/denis/Repos/first-escape-der-turm` → `Users-denis-Repos-first-escape-der-turm`
+Example: `/Users/you/Repos/my-app` → `Users-you-Repos-my-app`
 
 **Read transcripts:** JSONL, each line `{role, message}`. Grep or read selectively — do not load entire large files into context. Extract only pivotal exchanges (tried X → failed because Y → landed on Z).
 
@@ -78,7 +78,7 @@ Summarize only changes relevant to the blog angle — file paths, what changed, 
 - **Outline:** bullet headers only, no prose paragraphs.
 - **Alternative angles:** 2–4 topics the user may have missed, each with why it is interesting.
 - **Source material:** distilled quotes/paraphrase + code pointers — not full transcript dump.
-- **Filename:** `YYYY-MM-DD-<slug>.md` where `<slug>` is a kebab-case topic slug derived from the working title (e.g. `dynamic-character-spec-updates`).
+- **Filename:** `YYYY-MM-DD-<slug>.md` where `<slug>` is a kebab-case topic slug derived from the working title (e.g. `streaming-partial-json`).
 
 **Transcript durability:** store `[title](uuid)` in frontmatter (clickable in Cursor) + absolute `.jsonl` path. Optionally archive raw transcript as sibling `ideas/YYYY-MM-DD-<slug>.transcript.jsonl`. Do NOT paste full transcript into the idea `.md`.
 
@@ -137,7 +137,7 @@ tags: [ai]
 
 ```
 Use blog-idea-miner.
-Chat: [Dynamic spec reload debugging](0298ba68-6a00-48dd-80b1-f6c737ce8491)
-Branch: feat/dynamic-updates
-Working title: Live character spec updates without restart
+Chat: [Streaming partial JSON](0298ba68-6a00-48dd-80b1-f6c737ce8491)
+Branch: feat/stream-export
+Working title: Streaming partial JSON without buffering the whole payload
 ```

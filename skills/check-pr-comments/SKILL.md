@@ -4,9 +4,6 @@ description: Triage and verify PR review comments against official docs and proj
 disable-model-invocation: true
 ---
 
-<!-- Local skill; originated in first-escape-der-turm `.cursor/skills/check-pr-comments`.
-     Local change: references `karpathy` (this collection's name) instead of `karpathy-guidelines`. -->
-
 # Check PR Comments
 
 Check the comments in the PR that I provide you below. For each comment:
