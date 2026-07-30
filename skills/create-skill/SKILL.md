@@ -13,9 +13,12 @@ Author skills in **this repo** (`skills/<name>/SKILL.md`). Consuming repos get t
 
 ## Location (non-negotiable)
 
+**Default: always create/update skills in this central repo** (`~/Repos/skills` / `skills/<skill-name>/SKILL.md`). Do **not** use `~/.cursor/skills/` or a consuming project's `.claude/skills/` / `.cursor/skills/` as the source of truth — unless the user **explicitly** says otherwise (e.g. “personal only”, “this repo only”, “don’t add to central”).
+
 - **Put skills in `skills/<skill-name>/SKILL.md` only** (this repo).
 - Consuming repos install under `.claude/skills/` via sync — never hand-copy into a project as the source of truth.
 - Keep the skill directory flat unless scripts/reference files are truly needed.
+- If a skill already exists only under `~/.cursor/skills/`, migrate it here and tell the user the personal copy is stale.
 
 ## Prefer lean over frameworks
 
