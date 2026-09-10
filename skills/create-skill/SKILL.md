@@ -9,16 +9,25 @@ description: >-
 
 # Create Skill
 
-Author skills in **this repo** (`skills/<name>/SKILL.md`). Consuming repos get them via `npx github:dholde/skills sync` — do not invent a different layout.
+Author skills in **this repo** (`skills/<name>/SKILL.md`). This git repo is the single source of truth. Do not invent a different layout.
 
 ## Location (non-negotiable)
 
-**Default: always create/update skills in this central repo** (`~/Repos/skills` / `skills/<skill-name>/SKILL.md`). Do **not** use `~/.cursor/skills/` or a consuming project's `.claude/skills/` / `.cursor/skills/` as the source of truth — unless the user **explicitly** says otherwise (e.g. “personal only”, “this repo only”, “don’t add to central”).
+**Default: always create/update authored skills in this central repo** (`~/Repos/skills` / `skills/<skill-name>/SKILL.md`). Do **not** use `~/.cursor/skills/` or a consuming project's `.claude/skills/` / `.cursor/skills/` as the source of truth — unless the user **explicitly** says otherwise (e.g. “personal only”, “this repo only”, “don’t add to central”).
 
-- **Put skills in `skills/<skill-name>/SKILL.md` only** (this repo).
-- Consuming repos install under `.claude/skills/` via sync — never hand-copy into a project as the source of truth.
+- **Put authored/adapted skills in `skills/<skill-name>/SKILL.md` only** (this repo).
 - Keep the skill directory flat unless scripts/reference files are truly needed.
-- If a skill already exists only under `~/.cursor/skills/`, migrate it here and tell the user the personal copy is stale.
+- If an authored skill already exists only under `~/.cursor/skills/`, migrate it here and tell the user the personal copy is stale.
+- **Third-party tool skills** (CLIs such as Archify): do **not** vendor their files under `skills/`. Install with the official CLI globally and add a row to README **Global installs** (name, what it does, install command, update command). Never add those rows to **Skills in this repo**.
+
+## How consuming tools get skills from this collection
+
+Two options — pick per situation:
+
+1. **Symlink (preferred for personal/invoke-on-demand):** from this clone, `node bin/install.mjs link` creates `~/.claude/skills/<name>` → `skills/<name>` in this repo. Live updates; one SoT. Cursor compatibility-loads `~/.claude/skills/`.
+2. **Copy via sync (when the skill must travel with a project's git):** from the consuming repo, `npx github:dholde/skills sync` copies into `<project>/.claude/skills/`. Use this for clones, Cloud Agents, and `AGENTS.md` always-on reads. Leaves repo-local extras (dinositter, backend, frontend, etc.) alone — those extras stay in the consuming project and are never moved here.
+
+Do **not** write `.cursor/skills/` or `.agents/skills/` in consuming projects. Do not hand-copy into a project as a second source of truth.
 
 ## Prefer lean over frameworks
 
@@ -63,7 +72,7 @@ Benign documentation *about* these attacks (e.g. a security skill listing patter
 
 ## Installing / adapting an external skill
 
-When copying from another repo (Superpowers, addyosmani, mattpocock, etc.):
+When copying from another repo (Superpowers, addyosmani, mattpocock, etc.) **to vendor an adapted copy here**:
 
 1. Fetch the upstream `SKILL.md` (and only the companion files you will keep).
 2. Run the **Safety review** on the upstream text *before* adapting (external skills are higher risk).
@@ -76,19 +85,23 @@ When copying from another repo (Superpowers, addyosmani, mattpocock, etc.):
 5. Do not leave upstream paths like `docs/superpowers/...`.
 6. Run the **Safety review** again on the final adapted files.
 
+When the external skill is a **third-party tool** meant to be installed with its official CLI (e.g. Archify): do not vendor. Install globally, add a **Global installs** README row, stop.
+
 ## Catalog update (required)
 
-After adding or adapting a skill, update this repo's `README.md`:
+After adding or adapting an authored skill, update this repo's `README.md`:
 
 - Add a row under **Skills in this repo**.
 - Columns: skill name, one-line "what it does", link to local `skills/.../SKILL.md`, upstream source (or "local").
 - Keep entries brief — pickable at a glance.
 
+After adding a third-party global install, update **Global installs** instead (name, what it does, install command, update command). Do not put it in **Skills in this repo**.
+
 ## After authoring
 
-1. Skill lives under `skills/<name>/SKILL.md`.
+1. Authored skill lives under `skills/<name>/SKILL.md` (or the global CLI path for a third-party tool skill).
 2. Description is trigger-friendly; body matches shared paths and installed tooling.
 3. **Safety review passed** (or user explicitly accepted reported findings).
 4. External adaptations are commented with source + diffs.
-5. `README.md` is updated.
-6. Tell the user to run `npx github:dholde/skills sync` in each consuming repo (and commit the result) to pick up the new skill.
+5. `README.md` is updated in the correct list.
+6. Tell the user: `node ~/Repos/skills/bin/install.mjs link` for live personal symlinks, and/or `npx github:dholde/skills sync` in each consuming repo (and commit the result) when the skill must travel with that project's git.
