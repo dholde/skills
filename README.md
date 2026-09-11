@@ -1,22 +1,57 @@
 # Agent Skills
 
-Personal collection of Cursor / Claude Code skills. Source of truth for every skill used across repos. Consuming projects install a copy under `.claude/skills/` (works in Cursor today; Claude Code–ready).
+Single git source of truth and catalog for my Cursor + Claude Code setup.
+
+This repo is the only place authored skills and agent templates are maintained. Consuming projects adopt later; they are not edited from here.
+
+**Agents — stale copies vs local extras:** `sync` overlays this repo's trees onto `<project>/.claude/skills/<name>/`. It does not empty those dirs first, so a consuming repo can be in between: new files from here plus leftover paths from an older copy. If a name is listed under **Skills in this repo**, dest-only files (or a whole leftover dir after we removed that skill here) are stale — delete those paths, or replace that one directory, then re-sync. Never `rm -rf .claude/skills`. Never delete skill *names* that do not exist in this repo (repo-local extras such as dinositter, backend, frontend).
+
+## How I use this
+
+- Cursor + Claude Code, no double maintenance.
+- Always-on rules: consuming repo has `AGENTS.md` as the source of truth; `CLAUDE.md` is only `@AGENTS.md`. No `.cursorrules`, no `.cursor/rules/*.mdc`, no second copy under the project's `.cursor/skills/`.
+- Skills and custom agents live under `.claude/skills/` and `.claude/agents/` in consuming repos so both tools load them (Cursor compatibility-loads `.claude/skills/` and `~/.claude/skills/`).
+- Personal/invoke-on-demand skills from this repo: prefer symlink `~/.claude/skills/<name>` → `~/Repos/skills/skills/<name>` (live updates, one SoT).
+- Keep COPY as an option via the installer for skills that must travel with a project's git (clones, Cloud Agents, `AGENTS.md` always-on reads): `npx github:dholde/skills sync` copies into `<project>/.claude/skills/` and leaves repo-local extras alone.
+- Repo-local extras (e.g. dinositter, backend, frontend) stay only in the consuming project — never move them here.
+- Third-party tool skills (Archify and similar): install with the official CLI globally; document here; do not put their files under `skills/`.
+
+## Two skill lists (never mix them)
+
+- **Skills in this repo** = files under `skills/<name>/` that we author or adapt. `sync` may copy these into a project. `link` may symlink them into `~/.claude/skills/`.
+- **Global installs** = third-party tool skills we do **not** vendor. Document name, what it does, install command, update command. First row: Archify.
 
 ## Install / update
 
-From any git repo:
+### Link (personal, live updates)
+
+From this clone (not from the npx cache):
+
+```bash
+node ~/Repos/skills/bin/install.mjs link
+```
+
+Creates `~/.claude/skills/<name>` → this repo's `skills/<name>/` for every authored skill. Re-run after adding a skill here. Does not touch extra names already in `~/.claude/skills/` (e.g. Archify).
+
+Do **not** run `npx github:dholde/skills link` — that would try to link an npx cache, which the installer refuses.
+
+### Sync (copy into a project's git)
+
+From any consuming git repo:
 
 ```bash
 npx github:dholde/skills sync
 ```
 
-This copies **all** skills from this repo into the current project's `.claude/skills/`. First run installs; later runs overwrite with the latest. Review the git diff, then commit.
+Copies **all** skills from this repo into the current project's `.claude/skills/`. First run installs; later runs overlay matching names (they do not clear dest dirs first — see the stale-copy note at the top). Review the git diff, then commit.
 
 Repo-local extras (skills that exist only in the consuming project) are left alone — sync only writes names that live here.
 
+Do **not** write `.cursor/skills/` or `.agents/skills/` in consuming projects.
+
 **Conventions skills assume:** docs land under `docs/specs/`, `docs/plans/`, and `docs/research/` (create on first use if missing).
 
-**Author a new skill:** work in this repo (see `create-skill`), then sync into projects that should get it.
+**Author a new skill:** work in this repo (see `create-skill`), then `link` for personal use and/or `sync` into projects that need a git-tracked copy.
 
 ## Skills in this repo
 
@@ -27,7 +62,7 @@ Repo-local extras (skills that exist only in the consuming project) are left alo
 | caveman | Ultra-compressed output mode for token efficiency (levels: lite/full/ultra + wenyan). | [SKILL.md](skills/caveman/SKILL.md) | [JuliusBrussee/caveman `skills/caveman`](https://github.com/JuliusBrussee/caveman/blob/main/skills/caveman/SKILL.md) |
 | check-pr-comments | Triage PR review comments against official docs and project design before planning fixes. | [SKILL.md](skills/check-pr-comments/SKILL.md) | local |
 | create-release | Cut GitHub releases with semver tags, English titles, and bold-lead notes via `gh release create`. | [SKILL.md](skills/create-release/SKILL.md) | local |
-| create-skill | Conventions for authoring/updating skills in this collection (incl. malice/safety review) and syncing into consuming repos. | [SKILL.md](skills/create-skill/SKILL.md) | local |
+| create-skill | Conventions for authoring/updating skills in this collection (incl. malice/safety review), symlink vs sync, and global third-party installs. | [SKILL.md](skills/create-skill/SKILL.md) | local |
 | executing-plans | Executes a `docs/plans/` plan task-by-task in one continuous run: critical review first, exact steps, verifications, stop on blockers. | [SKILL.md](skills/executing-plans/SKILL.md) | [obra/superpowers `executing-plans`](https://github.com/obra/superpowers/blob/main/skills/executing-plans/SKILL.md) |
 | executing-plans-step-wise | Variant of executing-plans: one task = one branch = one PR, then a **hard stop** for user review before the next task. | [SKILL.md](skills/executing-plans-step-wise/SKILL.md) | local (derived from executing-plans) |
 | grill-me | Slash-command wrapper: runs a `grilling` session. | [SKILL.md](skills/grill-me/SKILL.md) | [mattpocock/skills `grill-me`](https://github.com/mattpocock/skills/blob/main/skills/productivity/grill-me/SKILL.md) |
@@ -40,6 +75,30 @@ Repo-local extras (skills that exist only in the consuming project) are left alo
 | writing-plans | Decomposes an approved design into bite-sized, independently testable tasks (exact files, code, commands) in `docs/plans/`. | [SKILL.md](skills/writing-plans/SKILL.md) | [obra/superpowers `writing-plans`](https://github.com/obra/superpowers/blob/main/skills/writing-plans/SKILL.md) |
 
 Every skill adapted from an external source carries an HTML comment at the top of its `SKILL.md` with the source URL and local changes (see `create-skill`).
+
+Archify is **not** in this table. It is a global install (see below).
+
+## Global installs
+
+Third-party tool skills. We do **not** vendor these under `skills/`. Install with the official CLI; list them here.
+
+| Skill | What it does | Install | Update |
+| --- | --- | --- | --- |
+| Archify | Invoke-only skill that turns a system description or repo into verifiable architecture, workflow, sequence, data-flow, and lifecycle diagrams (self-contained HTML). | `npx -y skills add tt-a1i/archify --skill archify --agent claude-code --global --yes` | `npx skills update` |
+
+Do not add `--copy`. Do not add `--agent cursor` unless Cloud Agents need it. Do not copy Archify files into this repo. Do not add Archify to `AGENTS.md` (invoke-only).
+
+## Agent templates
+
+Source files in this repo (copy into a consuming project, do not symlink globally unless you choose to):
+
+| Agent | File | Dest in a consuming repo |
+| --- | --- | --- |
+| planner | [agents/planner.md](agents/planner.md) | `.claude/agents/planner.md` |
+| implementer | [agents/implementer.md](agents/implementer.md) | `.claude/agents/implementer.md` |
+| verifier | [agents/verifier.md](agents/verifier.md) | `.claude/agents/verifier.md` |
+
+Consuming repos copy these to `.claude/agents/` (not `.cursor/agents/`). Frontmatter plus `Read .claude/skills/…/SKILL.md` paths are intentional for Cursor.
 
 ## Skill repos that inspired this
 

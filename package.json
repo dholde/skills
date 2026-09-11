@@ -2,10 +2,13 @@
   "name": "dholde-skills",
   "version": "1.0.0",
   "private": true,
-  "description": "Denis's agent skills — sync into any repo's .claude/skills/",
+  "description": "Denis's agent skills catalog — link into ~/.claude/skills/ or sync into a repo's .claude/skills/",
   "type": "module",
   "bin": {
     "dholde-skills": "./bin/install.mjs"
+  },
+  "scripts": {
+    "test": "node --test tests/install.test.mjs"
   },
   "files": [
     "bin",
