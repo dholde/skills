@@ -4,6 +4,8 @@ Single git source of truth and catalog for my Cursor + Claude Code setup.
 
 This repo is the only place authored skills and agent templates are maintained. Consuming projects adopt later; they are not edited from here.
 
+**Agents — stale copies vs local extras:** `sync` overlays this repo's trees onto `<project>/.claude/skills/<name>/`. It does not empty those dirs first, so a consuming repo can be in between: new files from here plus leftover paths from an older copy. If a name is listed under **Skills in this repo**, dest-only files (or a whole leftover dir after we removed that skill here) are stale — delete those paths, or replace that one directory, then re-sync. Never `rm -rf .claude/skills`. Never delete skill *names* that do not exist in this repo (repo-local extras such as dinositter, backend, frontend).
+
 ## How I use this
 
 - Cursor + Claude Code, no double maintenance.
@@ -41,7 +43,7 @@ From any consuming git repo:
 npx github:dholde/skills sync
 ```
 
-Copies **all** skills from this repo into the current project's `.claude/skills/`. First run installs; later runs overwrite with the latest. Review the git diff, then commit.
+Copies **all** skills from this repo into the current project's `.claude/skills/`. First run installs; later runs overlay matching names (they do not clear dest dirs first — see the stale-copy note at the top). Review the git diff, then commit.
 
 Repo-local extras (skills that exist only in the consuming project) are left alone — sync only writes names that live here.
 
