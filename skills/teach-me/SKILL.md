@@ -1,22 +1,21 @@
 ---
 name: teach-me
 description: >-
-  Teaches a specific technical topic with a concise, human-gated step-by-step
-  guide grounded in the current repo and official docs. Use when the user asks
-  to learn, teach, walk through, or explain how to implement something
-  (e.g. REST controllers, JDBC with/without Spring/Spring Boot), including
-  version-specific or framework-comparison questions meant for understanding
-  layers.
+  Teaches a topic in two beats: show and explain in chat, then the human
+  writes a small version to internalize. Use when the user asks to learn,
+  teach, follow a curriculum, or says "show me then I'll write"
+  (e.g. TypeScript lessons, REST controllers, JDBC with/without Spring).
 disable-model-invocation: true
 ---
 
-<!-- Local skill. Pacing mirrors guide-me; research + repo-first for teaching topics. -->
+<!-- Local skill. Pacing mirrors guide-me; research + repo-first for teaching topics.
+     2026-09-25: each step is show-in-chat, then the human writes a small version. -->
 
 # Teach Me
 
 Teach a **topic** (not just complete a task) with atomic steps. Same pacing as `guide-me`: outline first, one step at a time, advance only on human confirmation.
 
-**Announce when active:** "I'm using teach-me: research + repo check, then outline, then one step at a time until you confirm."
+**Announce when active:** "I'm using teach-me: I show it in chat, then you write a small version yourself."
 
 ## When to run
 
@@ -27,13 +26,15 @@ User provides a **topic** (required), optionally:
 
 If ambiguous, ask one clarifying question before starting.
 
+A `CURRICULUM.md` in the working folder is the topic. Follow its lesson order. Split one curriculum lesson into several atomic steps. Do not assign a whole lesson as one write.
+
 ## Non-negotiable rules
 
 1. **Research first** — Fetch official docs/specs for the topic (+ requested version). Prefer vendor docs over blogs/SO. Cite exact URLs for APIs, annotations, config keys.
 2. **Inspect the repo first** — Map modules, deps, packages, samples. Reuse/extend; do not scaffold a duplicate app.
 3. **One step per message** — Never hand a multi-step "do 1–5" checklist after the outline. Do **not** advance until they give an **explicit advance signal** (see below).
-4. **Teach, don’t only assign** — Every step must explain the idea (components, flow, why this layer) before or with the action. “Do this” alone is not enough.
-5. **Expand terms** — On first use in a step (and in the opener when needed), write abbreviations out: e.g. “JPA (Java Persistence API)”, “ORM (object–relational mapping)”, “DTO (data transfer object)”. One short plain-language gloss if the term is easy to misread.
+4. **Show, then they write** — Every step has two beats in one message. **Show** explains the idea in chat and includes a short worked example as a code block. That example is for reading. Do not create or edit the lab file while showing it. **You write** is a small exercise they type into the lab file. It may be close to the example. Low transfer is fine. The point is that they type it. Do not write that file for them. Do not paste a finished solution for the exercise. If they ask to see the answer, show it in chat and still leave the typing to them.
+5. **Expand terms** — On first use in a step (and in the opener when needed), write abbreviations out: e.g. “JPA (Java Persistence API)”, “ORM (object–relational mapping)”, “DTO (data transfer object)”. One short plain-language gloss if the term is easy to misread. Same for CLI flags and Maven or npm goals in **You write** (e.g. `-pl` = project list, `-am` = also make, `dependency:tree` = show the dependency graph). Never drop a bare flag salad without a gloss.
 6. **Concise** — Short bullets. Enough to understand and act — not a textbook. Prefer 2–5 explanation bullets over a wall of prose.
 7. **No assumed completion** — Existing code, a correct explanation, “ok”, “makes sense”, or a clarifying question ≠ step finished. Stay on the current step.
 8. **Honor unusual constraints** — Pure JDBC, Spring-without-Boot, old versions, etc. are intentional. Teach that path and name what the omitted layer normally provides.
@@ -42,8 +43,10 @@ If ambiguous, ask one clarifying question before starting.
 ## When to advance (strict)
 
 **Advance only** on clear signals such as:
-- `done` / `next` / `got it` / `ready` / `ready for next`
+- `done` / `next` / `got it` / `ready` / `ready for next`, and the **You write** check has actually been done
 - Pasting a non-secret check result that matches **Done when** (e.g. curl output, test pass) **and** they are not also asking a question
+
+`got it` after only reading **Show** is not enough. Point them at **You write** and stay.
 
 **Do not advance** when they:
 - Ask a follow-up or “what if / what’s the difference / why…”
@@ -74,25 +77,30 @@ Each step message contains only:
 ```markdown
 ## Step N of M — <title>
 
-**Concept:**
-- <What this piece is / does — 2–4 short bullets: components, request/data flow, or layer responsibility>
-- <Expand abbreviations on first use in this step; gloss jargon in plain words>
-- <Optional: one contrast — what you are *not* using yet and what that forces by hand>
+**Show:**
+- <What this piece is / does — 2–4 short bullets: components, flow, or why>
+- <Expand abbreviations on first use; gloss jargon in plain words>
+- <Optional: one contrast with Java or plain JavaScript, only if it changes the idea>
+- <A short worked example in a code block. For reading. Not the exercise.>
 
-**Do this:** <smallest useful action — one concept, one file, one command, or one contrast>
+**You write:** <one small edit in the lab file, close to the example. Name the file and the check command.>
 
-**Why it matters:** <one short sentence — interview/practical payoff>
+**Why it matters:** <one short sentence — interview payoff>
 
-**Done when:** <how they know to stop and reply>
+**Done when:** <they have typed it and the check passes. Reply done.>
 
 **Refs:** <1–3 official doc links>
 ```
 
 Then **stop**. Wait for check-in.
 
-If the check-in shows they aren’t done, stay on the same step with a tighter "Do this" and, if needed, a clearer **Concept** bullet. Do not skip ahead.
+If they understood the show but have not written, stay on this step and point at **You write**. If the write is wrong or incomplete, stay with a tighter **You write**. Do not skip ahead.
 
-**Concept quality bar:** A reader who only skims **Concept** should know *what* the thing is and *where it sits* before they touch code. **Do this** is practice, not the only teaching.
+After they report the write is done, read the file and review in a few sentences before advancing. Lead with what is true. One question only if a choice in their code is worth hearing.
+
+**Show quality bar:** A reader who only reads **Show** should know what the thing is and where it sits before they type. **You write** is the internalization, not the only teaching.
+
+**Examples imply a boundary.** A reader treats the positions in the worked example as the whole feature. If the construct can also appear in another position (a variable, a parameter, a return, a field, or another declaration form), say so in one sentence in **Show**, even when **You write** practices only one of them. If one declaration form makes the example illegal and another does not, name that difference. Do not leave the boundary for them to discover by asking what else an interview would allow.
 
 ## Framework-comparison topics
 
@@ -120,6 +128,7 @@ When cwd is `interview-preparation` (or similar):
 | Persistence / JDBC / JPA / Data | `spring-data-and-persistence` |
 | Java language / collections | `java-basics` |
 | Algorithms | `algorithms-and-datastructures` |
+| TypeScript | `web/typescript-basics` |
 
 If no fitting module exists, propose creating one (ask first). Smallest change that teaches the point. Update study `*.md` only if asked.
 
