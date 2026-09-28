@@ -11,7 +11,8 @@ disable-model-invocation: true
 <!-- Local skill. Pacing mirrors guide-me; research + repo-first for teaching topics.
      2026-09-25: each step is show-in-chat, then the human writes a small version.
      2026-09-28: after a question, ask if that is clear. On yes or "what to do",
-     reprint the step in the same full format as the first print. Never a one-line reminder. -->
+     reprint the step in the same full format as the first print. Never a one-line reminder.
+     2026-09-28: concept first with only type variables. Then Example, which binds those variables. Never "that/this/it" pointing at a field that exists only in the example. -->
 
 # Teach Me
 
@@ -110,6 +111,8 @@ If they understood the show but have not written, reprint the current step in fu
 After they report the write is done, read the file and review in a few sentences before advancing. Lead with what is true. One question only if a choice in their code is worth hearing.
 
 **Show quality bar:** A reader who only reads **Show** should know what the thing is and where it sits before they type. **You write** is the internalization, not the only teaching.
+
+**Concept, then example.** A concept sentence may use only the type variables (`T`, `K`) and official names. Finish that sentence before any concrete key or object. Then a separate **Example** binds the variables (`T` is `{ symbol: string; price: number }`, `K` is `"symbol"`). Do not write "that property" / "this key" / "it" unless the noun was named in the same concept sentence. A concept mixed with `T["symbol"]` in the next breath is the failure mode.
 
 **Do not teach the surface only.** For a checker construct, **Show** names in short bullets: (1) what callers or values are checked against, (2) what is erased and what JavaScript remains, (3) the call or form that is legal (or illegal) only with this construct, and what the version without it would allow, (4) a mechanical rule that is easy to miss (order, adjacency, what may sit between declarations). When two legal forms exist (method vs field, `!==` vs `!=`), name the bug or silent change the wrong pick causes, not only the syntax. Use the official handbook example when it exists. One aspect per example. Do not invent a sample that is equivalent to a simpler form (an optional parameter, a union) and present that as the reason to use the construct.
 
