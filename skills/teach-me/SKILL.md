@@ -9,7 +9,9 @@ disable-model-invocation: true
 ---
 
 <!-- Local skill. Pacing mirrors guide-me; research + repo-first for teaching topics.
-     2026-09-25: each step is show-in-chat, then the human writes a small version. -->
+     2026-09-25: each step is show-in-chat, then the human writes a small version.
+     2026-09-28: after a question, ask if that is clear. On yes or "what to do",
+     reprint the step in the same full format as the first print. Never a one-line reminder. -->
 
 # Teach Me
 
@@ -38,7 +40,7 @@ A `CURRICULUM.md` in the working folder is the topic. Follow its lesson order. S
 6. **Concise** — Short bullets. Enough to understand and act — not a textbook. Prefer 2–5 explanation bullets over a wall of prose.
 7. **No assumed completion** — Existing code, a correct explanation, “ok”, “makes sense”, or a clarifying question ≠ step finished. Stay on the current step.
 8. **Honor unusual constraints** — Pure JDBC, Spring-without-Boot, old versions, etc. are intentional. Teach that path and name what the omitted layer normally provides.
-9. **After a digression** — Restate the current step in one line so place isn’t lost. Do **not** open the next step’s full template.
+9. **After a digression** — Answer the question. Then ask if that is clear. Do not restate the write in a short form. Do **not** open the next step.
 
 ## When to advance (strict)
 
@@ -46,7 +48,7 @@ A `CURRICULUM.md` in the working folder is the topic. Follow its lesson order. S
 - `done` / `next` / `got it` / `ready` / `ready for next`, and the **You write** check has actually been done
 - Pasting a non-secret check result that matches **Done when** (e.g. curl output, test pass) **and** they are not also asking a question
 
-`got it` after only reading **Show** is not enough. Point them at **You write** and stay.
+`got it` after only reading **Show** is not enough. Reprint the current step in full and stay.
 
 **Do not advance** when they:
 - Ask a follow-up or “what if / what’s the difference / why…”
@@ -56,7 +58,14 @@ A `CURRICULUM.md` in the working folder is the topic. Follow its lesson order. S
 
 When unsure whether they want the next step: **ask** “Stay on this step, or go to Step N+1?” — do not choose for them.
 
-On clarification turns: answer the question (still expand terms) → one-line “Still **Step N** — reply **done** when ready” → stop. No preview of the next step’s actions.
+On clarification turns: answer the question (still expand terms). Do not repeat **You write**, the check command, or “reply **done**”. Do not write a compressed reminder (“Still Step N”, a file name plus one line, or a write without **Show**). Ask if that is clear. Stop. No preview of the next step’s actions.
+
+**Reprint the current step in full** when they:
+- say the last answer is clear (`yes`, `clear`, `makes sense`, or `ok` after you asked)
+- ask what to do (`what to do`, `print again`, `what do you want`, `I lost context`, `ready to write`)
+- understood **Show** but have not written (`got it` after reading only)
+
+Reprint the **same atomic step format as the first print**: `## Step N of M — title`, all **Show** bullets, the worked example, **You write** with the example code, **Why it matters**, **Done when**, **Refs**. They should not have to scroll. A shortened task line is not a reprint.
 
 ## Stage-setting (always first)
 
@@ -94,13 +103,25 @@ Each step message contains only:
 
 Then **stop**. Wait for check-in.
 
-If they understood the show but have not written, stay on this step and point at **You write**. If the write is wrong or incomplete, stay with a tighter **You write**. Do not skip ahead.
+If they understood the show but have not written, reprint the current step in full. If the write is wrong or incomplete, stay with a tighter **You write** in that same full format. Do not skip ahead.
+
+**Several open points.** When review or a clarification leaves more than one point open, first print a numbered list of all of them (short, like the review bullets). Then answer or work only the first. Do not start the next point until they say to go to the next. When they do, reprint the remaining list and start that next point. Do not ask them to say when they want the next point. They will say so.
 
 After they report the write is done, read the file and review in a few sentences before advancing. Lead with what is true. One question only if a choice in their code is worth hearing.
 
 **Show quality bar:** A reader who only reads **Show** should know what the thing is and where it sits before they type. **You write** is the internalization, not the only teaching.
 
+**Do not teach the surface only.** For a checker construct, **Show** names in short bullets: (1) what callers or values are checked against, (2) what is erased and what JavaScript remains, (3) the call or form that is legal (or illegal) only with this construct, and what the version without it would allow, (4) a mechanical rule that is easy to miss (order, adjacency, what may sit between declarations). When two legal forms exist (method vs field, `!==` vs `!=`), name the bug or silent change the wrong pick causes, not only the syntax. Use the official handbook example when it exists. One aspect per example. Do not invent a sample that is equivalent to a simpler form (an optional parameter, a union) and present that as the reason to use the construct.
+
 **Examples imply a boundary.** A reader treats the positions in the worked example as the whole feature. If the construct can also appear in another position (a variable, a parameter, a return, a field, or another declaration form), say so in one sentence in **Show**, even when **You write** practices only one of them. If one declaration form makes the example illegal and another does not, name that difference. Do not leave the boundary for them to discover by asking what else an interview would allow.
+
+**A use that fits both types hides the change.** When **Show** changes what the checker believes about a value, do not stop at a use that would also be legal for the original type. That use looks the same either way, so the reader never sees that the checker stopped looking at the real value. Include one use that is legal only under the new belief, and say what the runtime does with the original value. Do not leave that use for them to discover.
+
+**Do not fold a later lesson into this one.** If the curriculum already has a later slot for a second handbook feature, name that feature in **Leave for later** and stop. Do not assign a write that implements it.
+
+**The legal form is not always legal everywhere.** When a class or a function declaration may list call signatures and an object literal may not, **Show** says that in one sentence and includes the illegal snippet. Do not leave them to paste class syntax into `{ }`.
+
+**One body per overload in the source language.** If they know Java (or C#) overloads as separate methods, **Show** says the TypeScript list is erased and there is one body, before they write. Also say: callers see only the overload signatures, the implementation signature is not visible, the signatures must be consecutive, and the emit is the implementation only.
 
 ## Framework-comparison topics
 
@@ -139,7 +160,22 @@ If no fitting module exists, propose creating one (ask first). Smallest change t
 
 ## Finish
 
-When the final step’s check passes:
+When the final step’s check passes, clean the lab files from this lesson before the wrap-up. Do not open the next lesson in that turn.
+
+**Lab cleanup**
+
+- Edit only the lab files they changed in this lesson.
+- Keep their header format and their one-line and multiline comment style. If another format would be easier to read, describe it in chat and wait. Do not switch formats until they agree.
+- They may already have written section titles and Why lines. Still read them. Correct or tighten a placeholder title, a wrong Why, or a missing official term. Leave a comment that is already correct.
+- For each section, add or tighten a short "why it matters". Where the language chose a design the code alone does not show, add at most two lines on that purpose.
+- Keep every official term: handbook names, compiler flags, and the words in the error text. A why line uses those terms. Do not replace one with a paraphrase.
+- One section, one handbook concept, with its own types. Do not fold a second concept into that section. If the curriculum gives the concept its own lesson, the example belongs in that lesson's file.
+- A lab file is `NN-concept.ts`, where `NN` is the curriculum lesson number and the slug is the concept. Inserting a lesson renames later lab files with it. Pre-curriculum scratches are not kept once the curriculum names the lab file.
+- Adjust blank lines and finish cut-off comments when that makes the file easier to read. Do not change logic. Do not rewrite a comment that is already correct.
+
+**Learnings.** If the working folder has `LEARNINGS.md`, write that lesson's section before the wrap-up. Use the existing numbered style and official terms. State the fact. Do not write "the handbook sentence" or "Everyday Types says". Do not skip this, and do not offer it as optional.
+
+Then give the wrap-up:
 
 ```markdown
 ## Wrap-up
@@ -149,3 +185,5 @@ When the final step’s check passes:
 ```
 
 One short wrap-up. No long summary doc unless asked.
+
+Ask them to commit. Put one very short commit message in a fenced block they can copy. Do not commit unless they ask in that turn. Stop.
