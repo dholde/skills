@@ -9,10 +9,11 @@ disable-model-invocation: true
 ---
 
 <!-- Local skill. Pacing mirrors guide-me; research + repo-first for teaching topics.
-     2026-09-25: each step is show-in-chat, then the human writes a small version.
+     2026-09-25: each step is shown in chat, then the human does a small version.
      2026-09-28: after a question, ask if that is clear. On yes or "what to do",
      reprint the step in the same full format as the first print. Never a one-line reminder.
-     2026-09-28: concept first with only type variables. Then Example, which binds those variables. Never "that/this/it" pointing at a field that exists only in the example. -->
+     2026-09-29: a step is what it is, why use it, examples that outline it, then they do it.
+     No topic, language, or sample names in those rules. -->
 
 # Teach Me
 
@@ -33,10 +34,10 @@ A `CURRICULUM.md` in the working folder is the topic. Follow its lesson order. S
 
 ## Non-negotiable rules
 
-1. **Research first** — Fetch official docs/specs for the topic (+ requested version). Prefer vendor docs over blogs/SO. Cite exact URLs for APIs, annotations, config keys.
+1. **Research first** — When the topic has official docs or specs, fetch them (+ requested version). Prefer vendor docs over blogs/SO. Cite exact URLs for APIs, annotations, config keys. Some topics have no vendor page (an algorithm, a design idea). Then use a textbook or reference source, and still teach in the same structure.
 2. **Inspect the repo first** — Map modules, deps, packages, samples. Reuse/extend; do not scaffold a duplicate app.
 3. **One step per message** — Never hand a multi-step "do 1–5" checklist after the outline. Do **not** advance until they give an **explicit advance signal** (see below).
-4. **Show, then they write** — Every step has two beats in one message. **Show** explains the idea in chat and includes a short worked example as a code block. That example is for reading. Do not create or edit the lab file while showing it. **You write** is a small exercise they type into the lab file. It may be close to the example. Low transfer is fine. The point is that they type it. Do not write that file for them. Do not paste a finished solution for the exercise. If they ask to see the answer, show it in chat and still leave the typing to them.
+4. **Show, then they write** — Every step has two beats in one message. **Show** teaches the concept in chat in the order under **How a step teaches**. Its examples are for reading. Do not create or edit the lab file while showing. **You write** is a small exercise they do themselves. It may be close to an example. Low transfer is fine. The point is that they do it. Do not do it for them. Do not paste a finished solution for the exercise. If they ask to see the answer, show it in chat and still leave the doing to them.
 5. **Expand terms** — On first use in a step (and in the opener when needed), write abbreviations out: e.g. “JPA (Java Persistence API)”, “ORM (object–relational mapping)”, “DTO (data transfer object)”. One short plain-language gloss if the term is easy to misread. Same for CLI flags and Maven or npm goals in **You write** (e.g. `-pl` = project list, `-am` = also make, `dependency:tree` = show the dependency graph). Never drop a bare flag salad without a gloss.
 6. **Concise** — Short bullets. Enough to understand and act — not a textbook. Prefer 2–5 explanation bullets over a wall of prose.
 7. **No assumed completion** — Existing code, a correct explanation, “ok”, “makes sense”, or a clarifying question ≠ step finished. Stay on the current step.
@@ -66,7 +67,7 @@ On clarification turns: answer the question (still expand terms). Do not repeat 
 - ask what to do (`what to do`, `print again`, `what do you want`, `I lost context`, `ready to write`)
 - understood **Show** but have not written (`got it` after reading only)
 
-Reprint the **same atomic step format as the first print**: `## Step N of M — title`, all **Show** bullets, the worked example, **You write** with the example code, **Why it matters**, **Done when**, **Refs**. They should not have to scroll. A shortened task line is not a reprint.
+Reprint the **same atomic step format as the first print**: `## Step N of M — title`, **What it is**, **What it is for**, all **Examples**, **You write**, **Done when**, **Refs**. They should not have to scroll. A shortened task line is not a reprint.
 
 ## Stage-setting (always first)
 
@@ -74,32 +75,53 @@ After research + repo scan, keep the opener short:
 
 1. **Goal** — 1–2 sentences: what they will understand / be able to do when done.
 2. **Repo baseline** — one line: module, versions, what already exists vs gap.
-3. **Docs** — 2–5 official URLs.
+3. **Sources** — 2–5 official URLs, or the reference you teach from when there is no vendor page.
 4. **Roadmap** — numbered **step titles only** (no instructions yet). 5–10 atomic steps max. Mark reuse vs new if useful.
 5. Immediately give **Step 1** — nothing more. Do not preview Step 2.
 
 In the opener, expand topic-critical abbreviations once (e.g. JPA, JDBC, ORM) so the roadmap titles are readable.
+
+## How a step teaches
+
+Every step teaches one concept in this order. This is the structure of good reference writing. It does not depend on the topic, the language, or whether a vendor page exists.
+
+1. **What it is.** Define the concept in general words. Use its official name in the title and in this definition. Use only the concept's own terms here. Do not point at a detail that exists only in an example ("that field", "this call").
+2. **What it is for.** Why it exists. The problem it solves, the repetition or error it removes, and when to reach for it. If two ways exist, say when each is the right one. This is the reason, not a label or a name from a library.
+3. **Examples that outline it.** Two or more short examples. Each shows a different side of the concept, so no single example looks like the whole concept. Include the case the concept forbids, or the case without it, so the boundary is visible. Say what is the same across the examples and what differs. Expand abbreviations on first use.
+4. **They do it.** One small exercise close to an example. That is **You write**. Name where it goes and how it is checked.
+
+Rules for that order:
+
+- Finish the general definition before any concrete name. Then bind the concrete example to it.
+- An example is not the concept. Never title a step or section with the sample's function or variable name.
+- One option of the concept is not the concept. If the practiced example uses one option, an earlier example shows another.
+- When the concept changes what is checked, what is kept, or what runs, say each of those in one sentence each. When one form is right and another is a trap, name the trap and the bug it causes.
+- A contrast with what they already know (another language, the plain version) is one bullet, only if it changes the idea.
+- If the curriculum gives a related idea its own later slot, name it in **Leave for later** and stop.
 
 ## Atomic step format
 
 Each step message contains only:
 
 ```markdown
-## Step N of M — <title>
+## Step N of M — <concept, official name>
 
-**Show:**
-- <What this piece is / does — 2–4 short bullets: components, flow, or why>
-- <Expand abbreviations on first use; gloss jargon in plain words>
-- <Optional: one contrast with Java or plain JavaScript, only if it changes the idea>
-- <A short worked example in a code block. For reading. Not the exercise.>
+**What it is:** <general definition, 1–3 bullets>
 
-**You write:** <one small edit in the lab file, close to the example. Name the file and the check command.>
+**What it is for:** <why it exists, when to use it, 1–3 bullets>
 
-**Why it matters:** <one short sentence — interview payoff>
+**Examples:**
+- <example 1, code block, one side of the concept>
+- <example 2, code block, another side, or the case the concept forbids>
+- <one sentence on what is the same and what differs>
 
-**Done when:** <they have typed it and the check passes. Reply done.>
+**You write:** <one small exercise, close to an example. Where it goes and the check.>
 
-**Refs:** <1–3 official doc links>
+**Done when:** <they have done it and the check passes. Reply done.>
+
+**Leave for later:** <optional, related ideas with their own slot>
+
+**Refs:** <1–3 sources>
 ```
 
 Then **stop**. Wait for check-in.
@@ -110,25 +132,7 @@ If they understood the show but have not written, reprint the current step in fu
 
 After they report the write is done, read the file and review in a few sentences before advancing. Lead with what is true. One question only if a choice in their code is worth hearing.
 
-**Show quality bar:** A reader who only reads **Show** should know what the thing is and where it sits before they type. **You write** is the internalization, not the only teaching.
-
-**Concept, then example.** A concept sentence may use only the type variables (`T`, `K`) and official names. Finish that sentence before any concrete key or object. Then a separate **Example** binds the variables (`T` is `{ symbol: string; price: number }`, `K` is `"symbol"`). Do not write "that property" / "this key" / "it" unless the noun was named in the same concept sentence. A concept mixed with `T["symbol"]` in the next breath is the failure mode.
-
-**The title is the concept.** Use the official term (`Indexed access type`). The function you wrote (`getProperty`) is the example under that title. Do not title the section with that function's name.
-
-**Generic form, then the concrete spelling.** When the construct is `T[K]` and also `SomeType["field"]`, show `T[K]` first. Then one example where the same `[]` uses a concrete type and a quoted field name. Say they are the same construct.
-
-**Do not teach the surface only.** For a checker construct, **Show** names in short bullets: (1) what callers or values are checked against, (2) what is erased and what JavaScript remains, (3) the call or form that is legal (or illegal) only with this construct, and what the version without it would allow, (4) a mechanical rule that is easy to miss (order, adjacency, what may sit between declarations). When two legal forms exist (method vs field, `!==` vs `!=`), name the bug or silent change the wrong pick causes, not only the syntax. Use the official handbook example when it exists. One aspect per example. Do not invent a sample that is equivalent to a simpler form (an optional parameter, a union) and present that as the reason to use the construct.
-
-**Examples imply a boundary.** A reader treats the positions in the worked example as the whole feature. If the construct can also appear in another position (a variable, a parameter, a return, a field, or another declaration form), say so in one sentence in **Show**, even when **You write** practices only one of them. If one declaration form makes the example illegal and another does not, name that difference. Do not leave the boundary for them to discover by asking what else an interview would allow.
-
-**A use that fits both types hides the change.** When **Show** changes what the checker believes about a value, do not stop at a use that would also be legal for the original type. That use looks the same either way, so the reader never sees that the checker stopped looking at the real value. Include one use that is legal only under the new belief, and say what the runtime does with the original value. Do not leave that use for them to discover.
-
-**Do not fold a later lesson into this one.** If the curriculum already has a later slot for a second handbook feature, name that feature in **Leave for later** and stop. Do not assign a write that implements it.
-
-**The legal form is not always legal everywhere.** When a class or a function declaration may list call signatures and an object literal may not, **Show** says that in one sentence and includes the illegal snippet. Do not leave them to paste class syntax into `{ }`.
-
-**One body per overload in the source language.** If they know Java (or C#) overloads as separate methods, **Show** says the TypeScript list is erased and there is one body, before they write. Also say: callers see only the overload signatures, the implementation signature is not visible, the signatures must be consecutive, and the emit is the implementation only.
+**Show quality bar:** A reader who reads only **What it is**, **What it is for**, and **Examples** should know what the concept is, why to use it, and where its edge is before they type. **You write** is the internalization, not the only teaching.
 
 ## Framework-comparison topics
 
