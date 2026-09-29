@@ -53,7 +53,7 @@ If unsure: ask "Stay on this step, or go to Step N+1?" Do not choose for them.
 
 **Several open points:** list them, then work only the first. They will say when to go to the next. Do not nag.
 
-After they say the write is done, read the file and review in a few sentences. Lead with what is true.
+After they say the write is done, read the file and review in a few sentences. Lead with what is true. Then add or tighten that section's title, Shows, and Why in their comment style. Do not wait until wrap-up for headers. Do not change their logic or rename their declarations.
 
 ## Stage-setting (first)
 
@@ -108,7 +108,15 @@ Never ask them to paste secrets. Confirmation is "done" / "key is in env."
 
 When the last step of a lesson checks out: clean the lab files, then wrap up. Do not open the next lesson in that turn.
 
-**Lab cleanup:** only files from this lesson. Keep their comment style. Still fix a wrong title, a wrong why, or a missing real name. Use the words from the language and from error messages. One section, one idea. Lab file name follows the curriculum (`NN-concept.ts`).
+**Lab cleanup:**
+- Edit only the lab files they changed in this lesson.
+- Keep their header format and their one-line and multiline comment style. If another format would be easier to read, describe it in chat and wait.
+- They may already have written section titles and Why lines. Still read them. Correct or tighten a placeholder title, a wrong Why, or a missing real name. Leave a comment that is already correct.
+- For each section, add or tighten a short why. Where the language chose a design the code alone does not show, add at most two lines on that purpose.
+- Keep official terms: handbook names, compiler flags, and the words in the error text. A why line uses those terms.
+- One section, one idea, with its own types. Do not fold a second concept into that section.
+- A lab file is `NN-concept.ts`, where `NN` is the curriculum lesson number and the slug is the concept.
+- Adjust blank lines and finish cut-off comments when that makes the file easier to read. Do not change logic. Do not rewrite a comment that is already correct.
 
 **Learnings:** if `LEARNINGS.md` exists, write that lesson's section. State facts. Do not skip this.
 
