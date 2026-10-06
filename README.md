@@ -57,6 +57,7 @@ Do **not** write `.cursor/skills/` or `.agents/skills/` in consuming projects.
 
 | Skill | What it does | Local file | Upstream source |
 | --- | --- | --- | --- |
+| agent-work-log | Records a problem working with an agent as one entry in the current repo's `0_agent-work-experience/agent-work-log.md`. | [SKILL.md](skills/agent-work-log/SKILL.md) | local |
 | blog-idea-miner | Mines Cursor chats + git changes into short AI blog-post idea files under `blog-posts/ideas/`. | [SKILL.md](skills/blog-idea-miner/SKILL.md) | local |
 | brainstorming | Socratic design refinement: one question at a time, 2–3 approaches with trade-offs, validated design doc in `docs/specs/`. | [SKILL.md](skills/brainstorming/SKILL.md) | [obra/superpowers `brainstorming`](https://github.com/obra/superpowers/blob/main/skills/brainstorming/SKILL.md) |
 | caveman | Ultra-compressed output mode for token efficiency (levels: lite/full/ultra + wenyan). | [SKILL.md](skills/caveman/SKILL.md) | [JuliusBrussee/caveman `skills/caveman`](https://github.com/JuliusBrussee/caveman/blob/main/skills/caveman/SKILL.md) |
