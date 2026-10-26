@@ -21,6 +21,8 @@ When invoked:
 2. Check the implementation exists, matches the plan, and works.
 3. Run the checks for the active mode.
 4. Look for missed edge cases, including violations of (a) and (b) above.
+5. Check the change against the project's documented scale requirements (`AGENTS.md` / `CLAUDE.md`) at realistic user counts, covering caps, pagination, re-call behaviour, and duration. Fail verification if they are unmet or the plan did not state the expected load and how the design fits it.
+6. Check that the plan's decisions cite sources and that the implementation matches the chosen documented pattern. Fail verification if a decision lacks a citation or the code diverges from that pattern.
 
 Report:
 - What was verified and passed

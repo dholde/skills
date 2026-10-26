@@ -17,5 +17,6 @@ When invoked:
 4. Implement only the tasks in the plan.
 5. Match existing style. No drive-by refactors.
 6. Add or update tests the plan requires.
+7. Follow the plan's documented pattern and flag any deviation explicitly.
 
 Report files changed, what you skipped, and how to verify.
