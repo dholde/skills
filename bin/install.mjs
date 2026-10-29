@@ -4,6 +4,7 @@
  * Usage:
  *   npx github:dholde/skills sync   # copy into <cwd>/.claude/skills/
  *   node bin/install.mjs link       # symlink this clone into ~/.claude/skills/
+ *   npx github:dholde/skills writing-style <path-to-target-repo>
  */
 
 import {
@@ -31,6 +32,8 @@ const USAGE = `Usage:
       Copy this package's skills into the current repo's .claude/skills/
   node bin/install.mjs link
       Symlink this clone's skills into ~/.claude/skills/ (live updates)
+  npx github:dholde/skills writing-style <path-to-target-repo>
+      Copy rules/writing-style.md into <repo>/AGENTS.md and ensure CLAUDE.md has @AGENTS.md
 `;
 
 function assertGitRepo() {
@@ -166,6 +169,9 @@ if (cmd === "sync") {
   sync();
 } else if (cmd === "link") {
   link();
+} else if (cmd === "writing-style") {
+  const { syncWritingStyle } = await import("./sync-writing-style.mjs");
+  syncWritingStyle(process.argv[3]);
 } else {
   console.error(`Unknown command: ${cmd}\n\n${USAGE}`);
   process.exit(1);

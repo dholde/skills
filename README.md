@@ -53,6 +53,49 @@ Do **not** write `.cursor/skills/` or `.agents/skills/` in consuming projects.
 
 **Author a new skill:** work in this repo (see `create-skill`), then `link` for personal use and/or `sync` into projects that need a git-tracked copy.
 
+## Writing style
+
+Always-on writing rule for consuming repos. Edit it only in [`rules/writing-style.md`](rules/writing-style.md). That file is the rule body. When the script creates or appends the section, it adds the `## Writing style` heading and the marker comments.
+
+Always-on rules go inline: they are short and read every turn. Situational detail stays behind links in `AGENTS.md`.
+
+This catalog repo does not keep its own `AGENTS.md`. The file above is the source. Run the script on consuming repos.
+
+### Sync into a repo
+
+From a clone of this repo:
+
+```bash
+node bin/sync-writing-style.mjs <path-to-target-repo>
+```
+
+From anywhere:
+
+```bash
+npx github:dholde/skills writing-style <path-to-target-repo>
+```
+
+The script writes a `## Writing style` section into `<repo>/AGENTS.md`, between `<!-- BEGIN writing-style -->` and `<!-- END writing-style -->`.
+
+1. Markers already present: it replaces only the text between them.
+2. Markers absent: it appends the section and leaves every other line alone.
+3. `AGENTS.md` missing: it creates the file.
+4. Run it again: no further diff.
+
+It also makes sure `<repo>/CLAUDE.md` contains a line that is exactly `@AGENTS.md`. Claude Code reads `CLAUDE.md`. That line pulls in `AGENTS.md`, so Claude Code and Cursor share the rule. The script creates `CLAUDE.md` if needed, adds the line without changing other lines, and does not add it twice.
+
+### User-level install (optional)
+
+Paste the body of `rules/writing-style.md` into one of these if you want the rule in every project without syncing each repo:
+
+- `~/.claude/CLAUDE.md`
+- `~/.codex/AGENTS.md`
+- Cursor User Rules
+
+### GitHub Action (not included)
+
+A workflow on changes to `rules/writing-style.md` could open pull requests in consuming repos. That needs a token with write access to those repos. This repo does not add that secret or workflow.
+
 ## Skills in this repo
 
 | Skill | What it does | Local file | Upstream source |
