@@ -1,5 +1,5 @@
 ---
-name: premium-redesign
+name: design-premium
 description: Use when redesigning or polishing an existing UI so it looks like a premium, modern product while keeping the app's design system.
 ---
 
