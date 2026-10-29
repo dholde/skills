@@ -8,10 +8,11 @@
     "dholde-skills": "./bin/install.mjs"
   },
   "scripts": {
-    "test": "node --test tests/install.test.mjs"
+    "test": "node --test tests/install.test.mjs tests/writing-style.test.mjs"
   },
   "files": [
     "bin",
+    "rules",
     "skills"
   ],
   "engines": {
