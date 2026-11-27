@@ -11,29 +11,16 @@ This repo is the only place authored skills and agent templates are maintained. 
 - Cursor + Claude Code, no double maintenance.
 - Always-on rules: consuming repo has `AGENTS.md` as the source of truth; `CLAUDE.md` is only `@AGENTS.md`. No `.cursorrules`, no `.cursor/rules/*.mdc`, no second copy under the project's `.cursor/skills/`.
 - Skills and custom agents live under `.claude/skills/` and `.claude/agents/` in consuming repos so both tools load them (Cursor compatibility-loads `.claude/skills/` and `~/.claude/skills/`).
-- Personal/invoke-on-demand skills from this repo: prefer symlink `~/.claude/skills/<name>` → `~/Repos/skills/skills/<name>` (live updates, one SoT).
-- Keep COPY as an option via the installer for skills that must travel with a project's git (clones, Cloud Agents, `AGENTS.md` always-on reads): `npx github:dholde/skills sync` copies into `<project>/.claude/skills/` and leaves repo-local extras alone.
+- Skills from this repo reach a project only through `sync`: `npx github:dholde/skills sync` copies them into `<project>/.claude/skills/` and leaves repo-local extras alone. Nothing from this repo is installed globally into `~/.claude/skills/`.
 - Repo-local extras (e.g. dinositter, backend, frontend) stay only in the consuming project — never move them here.
 - Third-party tool skills (Archify and similar): install with the official CLI globally; document here; do not put their files under `skills/`.
 
 ## Two skill lists (never mix them)
 
-- **Skills in this repo** = files under `skills/<name>/` that we author or adapt. `sync` may copy these into a project. `link` may symlink them into `~/.claude/skills/`.
+- **Skills in this repo** = files under `skills/<name>/` that we author or adapt. `sync` copies these into a project.
 - **Global installs** = third-party tool skills we do **not** vendor. Document name, what it does, install command, update command. First row: Archify.
 
 ## Install / update
-
-### Link (personal, live updates)
-
-From this clone (not from the npx cache):
-
-```bash
-node ~/Repos/skills/bin/install.mjs link
-```
-
-Creates `~/.claude/skills/<name>` → this repo's `skills/<name>/` for every authored skill. Re-run after adding a skill here. Does not touch extra names already in `~/.claude/skills/` (e.g. Archify).
-
-Do **not** run `npx github:dholde/skills link` — that would try to link an npx cache, which the installer refuses.
 
 ### Sync (copy into a project's git)
 
@@ -51,7 +38,7 @@ Do **not** write `.cursor/skills/` or `.agents/skills/` in consuming projects.
 
 **Conventions skills assume:** docs land under `docs/specs/`, `docs/plans/`, and `docs/research/` (create on first use if missing).
 
-**Author a new skill:** work in this repo (see `create-skill`), then `link` for personal use and/or `sync` into projects that need a git-tracked copy.
+**Author a new skill:** work in this repo (see `create-skill`), then `sync` it into the projects that need it.
 
 ## Writing style
 
@@ -106,20 +93,21 @@ A workflow on changes to `rules/writing-style.md` could open pull requests in co
 | caveman | Ultra-compressed output mode for token efficiency (levels: lite/full/ultra + wenyan). | [SKILL.md](skills/caveman/SKILL.md) | [JuliusBrussee/caveman `skills/caveman`](https://github.com/JuliusBrussee/caveman/blob/main/skills/caveman/SKILL.md) |
 | check-pr-comments | Triage PR review comments against official docs and project design before planning fixes. | [SKILL.md](skills/check-pr-comments/SKILL.md) | local |
 | create-release | Cut GitHub releases with semver tags, English titles, and bold-lead notes via `gh release create`. | [SKILL.md](skills/create-release/SKILL.md) | local |
-| create-skill | Conventions for authoring/updating skills in this collection (incl. malice/safety review), symlink vs sync, and global third-party installs. | [SKILL.md](skills/create-skill/SKILL.md) | local |
+| create-skill | Conventions for authoring/updating skills in this collection (incl. malice/safety review), syncing into projects, and global third-party installs. | [SKILL.md](skills/create-skill/SKILL.md) | local |
 | design-premium | Redesigns or polishes an existing UI so it looks like a premium, modern product while keeping the app's design system. | [SKILL.md](skills/design-premium/SKILL.md) | local |
 | executing-plans | Executes a `docs/plans/` plan task-by-task in one continuous run: critical review first, exact steps, verifications, stop on blockers. | [SKILL.md](skills/executing-plans/SKILL.md) | [obra/superpowers `executing-plans`](https://github.com/obra/superpowers/blob/main/skills/executing-plans/SKILL.md) |
 | executing-plans-step-wise | Variant of executing-plans: one task = one branch = one PR, then a **hard stop** for user review before the next task. | [SKILL.md](skills/executing-plans-step-wise/SKILL.md) | local (derived from executing-plans) |
 | grill-me | Slash-command wrapper: runs a `grilling` session. | [SKILL.md](skills/grill-me/SKILL.md) | [mattpocock/skills `grill-me`](https://github.com/mattpocock/skills/blob/main/skills/productivity/grill-me/SKILL.md) |
 | grilling | Relentless one-question-at-a-time interview to stress-test a plan or decision. Good after a design draft exists. | [SKILL.md](skills/grilling/SKILL.md) | [mattpocock/skills `grilling`](https://github.com/mattpocock/skills/blob/main/skills/productivity/grilling/SKILL.md) |
 | guide-me | Walk through a specific task one atomic step at a time; outline first, advance only on confirmation. | [SKILL.md](skills/guide-me/SKILL.md) | local |
+| imovie-repeat-sequence | Repeat a motion cycle in iMovie: freeze-frame cutaway overlay, split at matching poses, duplicate the isolated clip. | [SKILL.md](skills/imovie-repeat-sequence/SKILL.md) | local |
 | karpathy | Guardrails against common LLM coding mistakes (overcomplication, non-surgical changes, hidden assumptions). | [SKILL.md](skills/karpathy/SKILL.md) | [multica-ai/andrej-karpathy-skills `karpathy-guidelines`](https://github.com/multica-ai/andrej-karpathy-skills/blob/main/skills/karpathy-guidelines/SKILL.md) (from [Karpathy's X post](https://x.com/karpathy/status/2015883857489522876)) |
 | keep-me-relevant | Human implements learning-relevant parts (solo or guided coaching); agent sets the stage, hints, reviews. | [SKILL.md](skills/keep-me-relevant/SKILL.md) | local (ideas from [mentor-agent-skill](https://github.com/ahmealy/mentor-agent-skill), [codetrain](https://github.com/InferHaven/agent-skills/tree/main/codetrain), [socratic-review](https://smithery.ai/skills/rysweet/socratic-review)) |
 | research | Background-agent investigation against primary sources; findings saved to `docs/research/` (or the repo's existing notes convention). | [SKILL.md](skills/research/SKILL.md) | [mattpocock/skills `research`](https://github.com/mattpocock/skills/blob/main/skills/engineering/research/SKILL.md) |
 | root-cause-summary | Explains one problem as bullets: expected behavior, actual behavior (symptoms), root cause, fix, in plain words. | [SKILL.md](skills/root-cause-summary/SKILL.md) | local |
 | status-summary | Nested one-line bullets for what was done, what is planned, and what is still open. | [SKILL.md](skills/status-summary/SKILL.md) | local |
 | sync-cv-to-portfolio | Turns the canonical Markdown CV into portfolio `content/` (site + chat knowledge). | [SKILL.md](skills/sync-cv-to-portfolio/SKILL.md) | local |
-| teach-me | Topic teaching with research + repo check, outline, then human-gated atomic steps (strict advance signals). | [SKILL.md](skills/teach-me/SKILL.md) | local |
+| teach-me | Topic teaching: show and explain in chat, then the human writes a small version. Outline first, one step at a time. | [SKILL.md](skills/teach-me/SKILL.md) | local |
 | writing-plans | Decomposes an approved design into bite-sized, independently testable tasks (exact files, code, commands) in `docs/plans/`. | [SKILL.md](skills/writing-plans/SKILL.md) | [obra/superpowers `writing-plans`](https://github.com/obra/superpowers/blob/main/skills/writing-plans/SKILL.md) |
 
 Every skill adapted from an external source carries an HTML comment at the top of its `SKILL.md` with the source URL and local changes (see `create-skill`).
@@ -138,7 +126,7 @@ Do not add `--copy`. Do not add `--agent cursor` unless Cloud Agents need it. Do
 
 ## Agent templates
 
-Source files in this repo (copy into a consuming project, do not symlink globally unless you choose to):
+Source files in this repo (copy into a consuming project):
 
 | Agent | File | Dest in a consuming repo |
 | --- | --- | --- |
