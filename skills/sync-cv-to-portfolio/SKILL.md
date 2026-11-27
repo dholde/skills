@@ -20,7 +20,7 @@ Portfolio content lives in `~/Repos/portfolio/content/`. Above `## AI Details` i
 - **Intro (ask-first):** Do not change profile `headline`, public body (paragraph under the name), or `location`. Diff against the CV, propose only concrete edits (e.g. “10 years → 11 years”), and wait. Never copy email or phone.
 - **Profile AI Details** (chat only): Technical Skills, education, publications, Amazon internship, ALK-Trier, BOSH fellowship, spoken languages.
 - **Jobs** → `content/experience/{slug}.{en,de}.md`. Keep SAP as three files by title period (2016–03/2020, 04/2020–03/2023, 04/2023–04/2025). Assign CV bullets to the matching period; leftover SAP-wide facts go in that file’s AI Details. Do not merge SAP into one row.
-- **DinoSitter** is a CV job and a **project** on the site. Do not add an experience row. Update `content/projects/dinositter.*.md`.
+- **DinoSitter** is both a CV job and a selected-work project. Keep `content/experience/dinositter.*.md` (CV order, after Turing) and `content/projects/dinositter.*.md`. Do not drop either.
 - **FoodAround, LetsPair** → existing project files. ALK-Trier stays profile AI Details only.
 - **Voice:** CV is first person; experience/project public bodies stay impersonal / third person.
 - **Dates:** EN `MM/YYYY`, DE `MM.YYYY`. EN/DE must match on employers, dates, titles, and tech. DE titles follow the CV (e.g. Freelance, German role names).

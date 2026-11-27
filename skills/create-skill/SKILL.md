@@ -22,10 +22,7 @@ Author skills in **this repo** (`skills/<name>/SKILL.md`). This git repo is the 
 
 ## How consuming tools get skills from this collection
 
-Two options — pick per situation:
-
-1. **Symlink (preferred for personal/invoke-on-demand):** from this clone, `node bin/install.mjs link` creates `~/.claude/skills/<name>` → `skills/<name>` in this repo. Live updates; one SoT. Cursor compatibility-loads `~/.claude/skills/`.
-2. **Copy via sync (when the skill must travel with a project's git):** from the consuming repo, `npx github:dholde/skills sync` copies into `<project>/.claude/skills/`. Use this for clones, Cloud Agents, and `AGENTS.md` always-on reads. Leaves repo-local extras (dinositter, backend, frontend, etc.) alone — those extras stay in the consuming project and are never moved here.
+Only through sync. From the consuming repo, `npx github:dholde/skills sync` copies the skills into `<project>/.claude/skills/`. It leaves repo-local extras (dinositter, backend, frontend, etc.) alone; those stay in the consuming project and are never moved here. Do not link or copy skills from this repo into `~/.claude/skills/`: a skill applies to a repo only after it is synced there.
 
 Do **not** write `.cursor/skills/` or `.agents/skills/` in consuming projects. Do not hand-copy into a project as a second source of truth.
 
@@ -104,4 +101,4 @@ After adding a third-party global install, update **Global installs** instead (n
 3. **Safety review passed** (or user explicitly accepted reported findings).
 4. External adaptations are commented with source + diffs.
 5. `README.md` is updated in the correct list.
-6. Tell the user: `node ~/Repos/skills/bin/install.mjs link` for live personal symlinks, and/or `npx github:dholde/skills sync` in each consuming repo (and commit the result) when the skill must travel with that project's git.
+6. Tell the user to run `npx github:dholde/skills sync` in each consuming repo that needs the skill, and to commit the result.
